@@ -67,8 +67,8 @@
                     <h6 class="collapse-header">Post crud operations:</h6>
                     <a class="collapse-item" href="buttons.html">Post Table</a>
                     <a class="collapse-item" href="cards.html">Add Post</a>
-                    <a class="collapse-item" href="cards.html">Category table</a>
-                    <a class="collapse-item" href="cards.html">Add Category</a>
+                    <a class="collapse-item" href="{{ path('category') }}">Category table</a>
+                    <a class="collapse-item" href="{{ path('category_add') }}">Add Category</a>
                 </div>
             </div>
         </li>
@@ -360,6 +360,7 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
+
 
 
 {% block javascripts %}

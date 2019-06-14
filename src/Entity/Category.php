@@ -31,12 +31,12 @@ class Category
 
     /**
      * @Gedmo\Slug(fields={"name"} , unique=true)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 , nullable=true)
      */
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="category" , fetch="EXTRA_LAZY")
      */
     private $posts;
 
