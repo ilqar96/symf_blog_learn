@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67b8c83d-5e79-4223-b013-37554c45cf35" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/admin/css/sweetalert2.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/admin/js/sweetalert2.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/CategoryController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/category/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/CategoryFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CategoryFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613092911.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613092911.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613132554.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613132554.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613132940.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613132940.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613133322.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613133322.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613133629.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613133629.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613134625.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613134625.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613135051.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613135051.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin_base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/category/create.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/category/create.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html.twig" afterDir="false" />
-    </list>
+    <list default="true" id="67b8c83d-5e79-4223-b013-37554c45cf35" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,16 +284,23 @@
       <option name="project" value="LOCAL" />
       <updated>1560500053769</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="test commit">
+      <created>1560670649080</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1560670649080</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47256000" />
+    <option name="totallyTimeSpent" value="47444000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.19591528" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.1933657" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -361,7 +349,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="database structur entity ." />
-    <option name="LAST_COMMIT_MESSAGE" value="database structur entity ." />
+    <MESSAGE value="test commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="test commit" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/templates/security/login.html.twig">
