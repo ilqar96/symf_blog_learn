@@ -4,19 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryFormType;
-use App\Form\RegistrationFormType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/category", name="category")
+     * @Route("/admin/category", name="category")
      */
     public function index(CategoryRepository $categoryRepository)
     {
@@ -31,7 +28,7 @@ class CategoryController extends AbstractController
 
 
     /**
-     * @Route("/category/add", name="category_add")
+     * @Route("/admin/category/add", name="category_add")
      */
     public function new(Request $request)
     {
@@ -58,46 +55,44 @@ class CategoryController extends AbstractController
 
 
     /**
-     * @Route("/category/edit/{slug}", name="category_edit")
+     * @Route("/admin/category/edit/{slug}", name="category_edit")
      */
     public function edit($slug,CategoryRepository $categoryRepository ,Request $request)
     {
-
         $category = $categoryRepository->findOneBy(['slug'=>$slug]);
         $form = $this->createForm(CategoryFormType::class, $category);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-                dd('test');
-
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($category);
                 $entityManager->flush();
 
-                return new JsonResponse(['reslut' => 'success']);
-            }
+                return $this->json(['result' => 'success','cat'=>$category]);
 
+            }
         }
 
-        return new JsonResponse(['reslut'=>'error']);
+        return new JsonResponse(['result'=>'error']);
+
 
     }
 
 
     /**
-     * @Route("/category/delete/{slug}", name="category_delete")
+     * @Route("/admin/category/delete/{slug}", name="category_delete")
      */
     public function delete( $slug,CategoryRepository $categoryRepository)
     {
         $category =  $categoryRepository->findOneBy(['slug'=>$slug]);
 
-        $em = $this->getDoctrine()->getEntityManager();
 
         if (!$category) {
             throw $this->createNotFoundException('No category found for slug - '.$slug);
         }
 
+        $em = $this->getDoctrine()->getEntityManager();
         $em->remove($category);
         $em->flush();
 
@@ -106,7 +101,7 @@ class CategoryController extends AbstractController
 
 
     /**
-     * @Route("/category/find/{slug}", name="category_delete")
+     * @Route("/admin/category/find/{slug}", name="category_find")
      */
     public function findBySlug( $slug,CategoryRepository $categoryRepository)
     {
