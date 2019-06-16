@@ -38,10 +38,10 @@
             <tbody>
             {% for category in categorys %}
             <tr>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>{{ category.slug }}</td>
-                <td>{{ category.posts|length }}</td>
+                <td class="category-name" >{{ category.name }}</td>
+                <td class="category-description">{{ category.description }}</td>
+                <td class="category-slug">{{ category.slug }}</td>
+                <td >{{ category.posts|length }}</td>
                 <td class="text-center">
                     <button type="button" class="btn btn-primary editCategoryModal" data-toggle="modal" data-target="#categoryEdit" data-catslug="{{ category.slug }}"><i class="fas fa-edit"></i></button>
                     <button type="submit" class="btn btn-danger deleteCategory" data-catslug="{{ category.slug }}"> <i class="fas fa-trash"></i></button>
@@ -115,17 +115,20 @@
                             confirmButtonText: 'Yes, delete it!'
                         }).then((result) => {
                             if (result.value) {
-                                window.location.replace('/category/delete/'+$slug);
+                                window.location.replace('/admin/category/delete/'+$slug);
                             }
                         })
             });
 
+            $editedRowBtn = 0;
+
             $('.editCategoryModal').on('click' ,function(){
                 // alert()
                 $slug = $(this).data('catslug');
+                $editedRowBtn = $(this);
 
                 $.ajax({
-                    url: "/category/find/"+$slug,
+                    url: "/admin/category/find/"+$slug,
                     type: "post",
                     success: function (response) {
                         $('#editCategoryBtn').data('catslug',response['slug'])
@@ -137,55 +140,40 @@
 
             $('#editCategoryForm').on('submit' ,function(e){
                 e.preventDefault()
-                var formSerialize = $(this).serialize();
-                alert('test');
-                $slug = $(this).data('catslug');
+                $form = $(this);
+                var formSerialize = $form.serialize();
+                $slug = $('#editCategoryBtn').data('catslug');
 
                 $.ajax({
-                    url: "/category/edit/"+$slug,
+                    url: "/admin/category/edit/"+$slug,
                     type: "post",
                     data:  formSerialize,
                     success: function (response) {
                         if(response['result']=='success'){
-                            alert('success');
+                            console.log(response['cat']['slug']);
+                            $editedRowBtn.parents('tr').children('td.category-name').text(response['cat']['name'])
+                            $editedRowBtn.parents('tr').children('td.category-description').text(response['cat']['description'])
+                            $editedRowBtn.parents('tr').children('td.category-slug').text(response['cat']['slug'])
+                            $editedRowBtn.data('catslug',response['cat']['slug'])
+                            $editedRowBtn.siblings('button.deleteCategory').data('catslug',response['cat']['slug'])
+                            $('#categoryEdit').modal('toggle');
+                            Swal.fire({
+                                position: 'top-end',
+                                type: 'success',
+                                title: 'Your work has been saved',
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
                         }else{
-                            alert('ertt');
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
                         }
                     }
                 });
             })
-
-
-                // $('.deleteCategory').click(function (e) {
-                //     e.preventDefault();
-                //     $slug = $(this).data('catslug');
-                //
-                //     Swal.fire({
-                //         title: 'Are you sure?',
-                //         text: "You won't be able to revert this!",
-                //         type: 'warning',
-                //         showCancelButton: true,
-                //         confirmButtonColor: '#3085d6',
-                //         cancelButtonColor: '#d33',
-                //         confirmButtonText: 'Yes, delete it!'
-                //     }).then((result) => {
-                //         if (result.value) {
-                //
-                //             $.ajax({
-                //                 url: "/category/delete/"+$slug,
-                //                 type: "post",
-                //                 success: function (response) {
-                //                     if(response['result']=='success'){
-                //                         window.location.replace('/category');
-                //                     }else{
-                //                         alert('wrong')
-                //                     }
-                //                 }
-                //             });
-                //         }
-                //     })
-                // })
-
 
 
         })

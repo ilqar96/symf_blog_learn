@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67b8c83d-5e79-4223-b013-37554c45cf35" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/admin/css/sweetalert2.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/admin/js/sweetalert2.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/CategoryFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CategoryFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613092911.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613092911.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613132554.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613132554.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613132940.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613132940.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613133322.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613133322.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613133629.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613133629.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613134625.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613134625.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190613135051.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190613135051.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin_base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/category/create.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/category/create.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html.twig" afterDir="false" />
-    </list>
+    <list default="true" id="67b8c83d-5e79-4223-b013-37554c45cf35" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,41 +26,7 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/category/index.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="146" column="41" selection-start-line="146" selection-start-column="41" selection-end-line="146" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Controller/CategoryController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="70" column="27" selection-start-line="70" selection-start-column="27" selection-end-line="70" selection-end-column="27" />
-              <folding>
-                <element signature="e#34#58#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Form/CategoryFormType.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#28#52#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -259,10 +208,10 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-74" />
-    <option name="y" value="125" />
-    <option name="width" value="1386" />
-    <option name="height" value="788" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1616" />
+    <option name="height" value="886" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -276,65 +225,6 @@
             <path>
               <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
               <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Form" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="category" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="symf_blog_learn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="symf_blog_learn" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -394,16 +284,23 @@
       <option name="project" value="LOCAL" />
       <updated>1560500053769</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="test commit">
+      <created>1560670649080</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1560670649080</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46977000" />
+    <option name="totallyTimeSpent" value="47444000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.19591528" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.1933657" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -452,7 +349,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="database structur entity ." />
-    <option name="LAST_COMMIT_MESSAGE" value="database structur entity ." />
+    <MESSAGE value="test commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="test commit" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/templates/security/login.html.twig">
