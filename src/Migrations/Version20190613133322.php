@@ -25,7 +25,7 @@ final class Version20190613133322 extends AbstractMigration
         $this->addSql('ALTER TABLE post ADD author_id INT NOT NULL, CHANGE image image VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE post ADD CONSTRAINT FK_5A8A6C8DF675F31B FOREIGN KEY (author_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_5A8A6C8DF675F31B ON post (author_id)');
-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE roles roles LONGTEXT NOT NULL');
     }
 
     public function down(Schema $schema) : void
