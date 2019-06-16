@@ -29,7 +29,7 @@ final class Version20190613135051 extends AbstractMigration
         $this->addSql('ALTER TABLE category CHANGE description description VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE comment CHANGE author_id author_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE post CHANGE image image VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE roles roles LONGTEXT NOT NULL');
     }
 
     public function down(Schema $schema) : void
