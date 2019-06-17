@@ -1,0 +1,121 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Hello CategoryController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- Custom fonts for this template -->
+    <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this page -->
+    <link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Category list</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Slug</th>
+                        <th>Post Count</th>
+                        <th>Operations</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Slug</th>
+                        <th>Post Count</th>
+                        <th>Operations</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for category in categorys %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description }}</td>
+                            <td>{{ category.slug }}</td>
+                            <td>{{ category.posts|length }}</td>
+                            <td class="text-center">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#categoryEdit" id="buttonEditCat" data-catslug="{{ category.slug }}" ><i class="fas fa-edit"></i></button>
+
+                                <form action="{{ path('category_delete', {slug:category.slug}) }}"  style="display: inline-block;">
+                                    <button type="submit" class="btn btn-danger" ><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{#    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryEdit" data-whatever="@mdo">Open modal for @mdo</button>#}
+
+    <div class="modal fade" id="categoryEdit" tabindex="-1" role="dialog" aria-labelledby="categoryEditLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryEditLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_row(form.name) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_row(form.description) }}
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Page level plugins -->
+    <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $('#buttonEditCat').click(function () {
+            $slug = $(this).data('catslug');
+
+            $.ajax({
+                url: "/category/find/"+$slug,
+                type: "post",
+                success: function (response) {
+                    console.log(response['name']);
+                }
+            });
+        })
+    </script>
+
+{% endblock %}
