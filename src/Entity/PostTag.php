@@ -6,68 +6,58 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
- */
-class Tag
+
+class PostTag
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @Gedmo\Slug(fields={"name"} , unique=true)
-     * @ORM\Column(type="string", length=255,nullable=true)
-     */
-    private $slug;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Post", inversedBy="tags")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="post" , fetch="EXTRA_LAZY")
      */
     private $posts;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="tag" , fetch="EXTRA_LAZY")
+     */
+    private $tags;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
     {
-        return $this->id;
+        return $this->tags;
     }
 
-    public function getName(): ?string
+    public function addTag(Tag $tag): self
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->addPost($this);
+        }
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function removeTag(Tag $tag): self
     {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+            $tag->removePost($this);
+        }
 
         return $this;
     }
+
+
 
     /**
      * @return Collection|Post[]
@@ -94,4 +84,6 @@ class Tag
 
         return $this;
     }
+
+
 }
