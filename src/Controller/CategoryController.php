@@ -18,7 +18,7 @@ class CategoryController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository)
     {
-        $categorys =  $categoryRepository->findBy(['isDeleted'=>'false']);
+        $categorys =  $categoryRepository->findBy(['isDeleted'=>false]);
         $form = $this->createForm(CategoryFormType::class);
 
         return $this->render('category/index.html.twig', [

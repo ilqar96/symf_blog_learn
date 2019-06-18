@@ -34,7 +34,11 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\File(mimeTypes={ "image/png", "image/jpeg" })
+     * @Assert\File(mimeTypes={ "image/png", "image/jpeg" },
+     *              maxSize = "1024k"
+     * )
+     *
+     *
      */
     private $image;
 

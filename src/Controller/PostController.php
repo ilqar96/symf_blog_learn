@@ -41,18 +41,19 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tags = $request->request->get('tags');
-
-            foreach ( $tags as $tag) {
-                $tagElement = $tagRepository->findOneBy(['name'=>strtolower($tag['name']) ] );
-               if(  $tagElement !=null ){
-                   $tagElement->addPost($post);
-                   $entityManager->persist($tagElement);
-               }else{
-                   $tagElement = new Tag();
-                   $tagElement->setName(strtolower($tag['name']));
-                   $tagElement->addPost($post);
-                   $entityManager->persist($tagElement);
-               }
+            if($tags != null){
+                foreach ( $tags as $tag) {
+                    $tagElement = $tagRepository->findOneBy(['name'=>strtolower($tag['name']) ] );
+                   if(  $tagElement !=null ){
+                       $tagElement->addPost($post);
+                       $entityManager->persist($tagElement);
+                   }else{
+                       $tagElement = new Tag();
+                       $tagElement->setName(strtolower($tag['name']));
+                       $tagElement->addPost($post);
+                       $entityManager->persist($tagElement);
+                   }
+                }
             }
 
             if($request->files->get('image')!=null){
@@ -104,20 +105,20 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tags = $request->request->get('tags');
-
-            foreach ( $tags as $tag) {
-                $tagElement = $tagRepository->findOneBy(['name'=>strtolower($tag['name']) ] );
-                if(  $tagElement !=null ){
-                    $tagElement->addPost($post);
-                    $entityManager->persist($tagElement);
-                }else{
-                    $tagElement = new Tag();
-                    $tagElement->setName(strtolower($tag['name']));
-                    $tagElement->addPost($post);
-                    $entityManager->persist($tagElement);
+            if($tags != null) {
+                foreach ($tags as $tag) {
+                    $tagElement = $tagRepository->findOneBy(['name' => strtolower($tag['name'])]);
+                    if ($tagElement != null) {
+                        $tagElement->addPost($post);
+                        $entityManager->persist($tagElement);
+                    } else {
+                        $tagElement = new Tag();
+                        $tagElement->setName(strtolower($tag['name']));
+                        $tagElement->addPost($post);
+                        $entityManager->persist($tagElement);
+                    }
                 }
             }
-
 
             $newImg = $request->files->get('image');
             if($newImg!=null){
