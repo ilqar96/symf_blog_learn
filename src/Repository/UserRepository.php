@@ -19,6 +19,23 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @return User[]
+     */
+    public function findUsersForShow()
+    {
+
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles not LIKE  :role1 ')
+            ->andWhere('u.roles not LIKE  :role2 ')
+            ->setParameter('role1','%"ROLE_SUPER_ADMIN"%')
+            ->setParameter('role2','%"ROLE_ADMIN"%')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

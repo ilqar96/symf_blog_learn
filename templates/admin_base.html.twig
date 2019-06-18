@@ -12,6 +12,8 @@
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+    <!-- Custom fonts for this template -->
+    <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
@@ -65,8 +67,8 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Post crud operations:</h6>
-                    <a class="collapse-item" href="buttons.html">Post Table</a>
-                    <a class="collapse-item" href="cards.html">Add Post</a>
+                    <a class="collapse-item" href="{{ path('post_index') }}">Post Table</a>
+                    <a class="collapse-item" href="{{ path('post_new') }}">Add Post</a>
                     <a class="collapse-item" href="{{ path('category') }}">Category table</a>
                     <a class="collapse-item" href="{{ path('category_add') }}">Add Category</a>
                 </div>
@@ -78,21 +80,22 @@
             Super Admin Panel
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Users</span>
-            </a>
-            <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">User crud operations:</h6>
-                    <a class="collapse-item" href="buttons.html">User Table</a>
-                    <a class="collapse-item" href="cards.html">Add User</a>
-                </div>
-            </div>
-        </li>
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Users</span>
+                </a>
+                <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">User crud operations:</h6>
+                        <a class="collapse-item" href="{{ path('user_index') }}">User Table</a>
+                    </div>
+                </div>
+            </li>
+        {% endif %}
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -264,12 +267,13 @@
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.email }}</span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{ path('user_show',{id:app.user.id}) }}">
+
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
@@ -298,11 +302,19 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">
+                    {% block page_heading %}<h1 class="h3 mb-4 text-gray-800">Page Heading</h1> {% endblock %}
+                </h1>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-body" style="min-height:90vh;">
 
                 {% block body %}
                     <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
                 {% endblock %}
-
+                    </div>
+                </div>
             </div>
             <!-- /.container-fluid -->
 
@@ -366,7 +378,6 @@
 {% block javascripts %}
 
 {% endblock %}
-
 
 </body>
 </html>

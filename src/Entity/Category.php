@@ -40,6 +40,11 @@ class Category
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="boolean"  ,nullable=true)
+     */
+    private $isDeleted=false;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -113,6 +118,18 @@ class Category
                 $post->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Array_;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,13 +15,10 @@ class CategoryFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
         $builder
             ->add('name', TextType::class ,['attr'=>['class'=>'form-control' ,'placeholder'=>'enter category name' ],'label'=>'Name'])
             ->add('description', TextType::class  ,['attr'=>['class'=>'form-control','placeholder'=>'category desc' ] , 'label'=>'Description'] )
-            ->add('save', SubmitType::class, ['label' => 'Create' ,'attr'=>['class'=>'btn btn-success  w-100']])
-        ;
+           ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

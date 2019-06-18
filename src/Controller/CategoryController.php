@@ -5,53 +5,49 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryFormType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/category", name="category")
+     * @Route("/admin/category", name="category")
      */
     public function index(CategoryRepository $categoryRepository)
     {
-        $categorys = $categoryRepository->findAll();
-
+        $categorys =  $categoryRepository->findBy(['isDeleted'=>'false']);
         $form = $this->createForm(CategoryFormType::class);
 
-
-
         return $this->render('category/index.html.twig', [
+            'form'=>$form->createView(),
             'categorys' => $categorys,
-            'form' => $form->createView(),
         ]);
     }
 
 
     /**
-     * @Route("/category/add", name="category_add")
+     * @Route("/admin/category/add", name="category_add")
      */
     public function new(Request $request)
     {
+
         $category = new Category();
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $category = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($category);
+            $entityManager->flush();
 
-             $entityManager = $this->getDoctrine()->getManager();
-             $entityManager->persist($category);
-             $entityManager->flush();
+            // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('category_add');
         }
-
 
         return $this->render('category/create.html.twig', [
             'form' => $form->createView(),
@@ -60,56 +56,75 @@ class CategoryController extends AbstractController
 
 
     /**
-     * @Route("/category/edit/{slug}", name="category_edit")
+     * @Route("/admin/category/edit/{slug}", name="category_edit")
      */
-    public function edit(Request $request,$slug ,CategoryRepository $repo)
+    public function edit($slug,CategoryRepository $categoryRepository ,Request $request, EntityManagerInterface $em)
     {
-
-        $category = $repo->findOneBy(['slug'=>$slug]);
+        $category = $categoryRepository->findOneBy(['slug'=>$slug]);
         $form = $this->createForm(CategoryFormType::class, $category);
-        $form->handleRequest($request);
 
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($category);
+                $em->flush();
 
-        if ($form->isValid()) {
+                return $this->json(['result' => 'success','cat'=>[
+                    'id' => $category->getId(),
+                    'name' => $category->getName(),
+                    'description' => $category->getDescription(),
+                    'slug' => $category->getSlug(),
+                ]]);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
-
-            return new Response('success');
+            }
         }
 
-        return new Response('error');
+        return new JsonResponse(['result'=>'error']);
+
+
     }
 
+
     /**
-     * @Route("/category/delete/{slug}" ,name="category_delete")
+     * @Route("/admin/category/delete/{slug}", name="category_delete")
      */
-    public function deleteAction($slug,CategoryRepository $categoryRepository)
+    public function delete( $slug,CategoryRepository $categoryRepository, EntityManagerInterface $em)
     {
-        $em = $this->getDoctrine()->getEntityManager();
         $category =  $categoryRepository->findOneBy(['slug'=>$slug]);
 
+
         if (!$category) {
-            throw $this->createNotFoundException('No category found for slug '.$slug);
+            throw $this->createNotFoundException('No category found for slug - '.$slug);
         }
 
-        $em->remove($category);
+        $category->setIsDeleted(true);
         $em->flush();
-
 
         return $this->redirectToRoute('category');
     }
 
 
     /**
-     * @Route("/category/find/{slug}" ,name="category_find" )
+     * @Route("/admin/category/find/{slug}", name="category_find")
      */
-    public function findOneBySlug($slug,CategoryRepository $categoryRepository){
-
+    public function findBySlug( $slug,CategoryRepository $categoryRepository)
+    {
         $category =  $categoryRepository->findOneBy(['slug'=>$slug]);
 
-        return new JsonResponse($category);
+        if (!$category) {
+            throw $this->createNotFoundException('No category found for slug - '.$slug);
+        }
+
+        return $this->json([
+            'id' => $category->getId(),
+            'name' => $category->getName(),
+            'description' => $category->getDescription(),
+            'slug' => $category->getSlug(),
+        ]);
+
     }
+
+
 
 
 
