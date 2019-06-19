@@ -1,0 +1,19 @@
+<!-- Blog Post -->
+<div class="card mb-4">
+    <img class="card-img-top" style="height: 300px;" src="{{ asset('images/'~post.image) }}" alt="Card image cap">
+    <div class="card-body">
+        <h2 class="card-title">
+            <a  style="color:black;text-decoration: none" class="text-uppercase" href="{{ path('post_show_home',{slug:post.slug}) }}">
+            {{ post.title }}
+            </a>
+        </h2>
+        <p class="card-text">
+            {{ post.content|wordwrap(20) }}
+        </p>
+        <a href="{{ path('post_show_home',{slug:post.slug}) }}" class="btn btn-primary">Read More &rarr;</a>
+    </div>
+    <div class="card-footer text-muted">
+        Posted on {{ post.createdAt ? post.createdAt|date('d M Y') }} by
+        <a href="{{ path('post_authors_home',{id:post.author.id}) }}">{{ post.author.email }}</a>
+    </div>
+</div>

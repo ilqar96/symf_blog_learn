@@ -3,17 +3,38 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-    <h1>home controller</h1>
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-         <a href="{{ path("app_logout") }}">exit</a>
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path("admin_home") }}">admin</a>
-        {% endif %}
+        <div class="col-md-8">
+
+            {% if posts|length %}
+                <h1 class="my-4">All Posts
+                    {#        <small>All Posts</small>#}
+                </h1>
+
+                {% for post in posts %}
+                    <!-- Blog Entries Column -->
+                    {{ include('inc/post_component.html.twig',{post:post}) }}
+                {% endfor %}
+
+            {% else %}
+                <h2 class="my-4" >No Posts</h2>
+            {% endif %}
+
+        </div>
 
 
-    {% else %}
-        <a class="btn btn-primary" href="{{ path("app_login") }}">Login</a>
-        <a class="btn btn-secondary"  href="{{ path("app_register") }}">Register</a>
-    {% endif %}
+    {{ include('inc/side_bar.html.twig',{categorys:categorys,tags:tags}) }}
+
+
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center mb-4">
+        <li class="page-item">
+            <a class="page-link" href="#">&larr; Older</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Newer &rarr;</a>
+        </li>
+    </ul>
+
+
 {% endblock %}

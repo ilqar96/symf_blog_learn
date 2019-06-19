@@ -19,7 +19,13 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class , [
+                'attr'=>[
+                    'class'=>'form-control form-control-user',
+                    'placeholder'=>'Email Address',
+                ],
+                    'label' => false
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'constraints' => [
@@ -34,15 +40,19 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
                 'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => [ 'label'=>false ,'attr'=>[ 'class' => 'form-control form-control-user', 'placeholder'=>'Repeat Password'] ],
+                'second_options' => [  'label'=>false ,'attr'=>[ 'class' => 'form-control form-control-user', 'placeholder'=>'Password'] ],
             ])
-            ->add('termsAccepted', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => new IsTrue(),
-            ])
+//            ->add('termsAccepted', CheckboxType::class, [
+//                'mapped' => false,
+//                'constraints' => new IsTrue(),
+//                'attr'=>[
+//                    'style'=>'width:20px; display:inline',
+//                    'class'=>'form-control',
+//                ],
+//                'label' => false
+//            ])
         ;
     }
 
