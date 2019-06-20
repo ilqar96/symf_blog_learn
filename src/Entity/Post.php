@@ -92,6 +92,11 @@ class Post
     protected $updatedAt;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDeleted;
+
+    /**
      * Sets createdAt.
      *
      * @param  \DateTime $createdAt
@@ -270,6 +275,18 @@ class Post
             $this->tags->removeElement($tag);
             $tag->removePost($this);
         }
+
+        return $this;
+    }
+
+    public function getIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

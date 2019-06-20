@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -17,11 +18,17 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function index(PostRepository $prepo ,CategoryRepository $categoryRepository ,TagRepository $tagRepository)
+    public function index(
+        PostRepository $postRepository ,
+        CategoryRepository $categoryRepository ,
+        TagRepository $tagRepository,
+        Request $request
+    )
     {
-        $posts = $prepo->findBy([],['createdAt'=>'DESC']);
+        $q = $request->query->get('q');
+        $posts = $postRepository->findSearchedPosts($q);
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
-        $tags = $tagRepository->findBy([],[],15);
+        $tags = $tagRepository->findBy(['isDeleted'=>false],[],15);
 
         return $this->render('home/index.html.twig', [
             'posts' => $posts,
@@ -33,29 +40,20 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/post-show/{slug}", name="post_show_home")
-     */
-    public function showPost(Post $post)
-    {
-        return $this->render('home/show.html.twig',[
-            'post'=>$post,
-        ]);
-    }
-
-    /**
      * @Route("/category/{slug}", name="post_categorys_home")
      */
     public function showCategorysPost(
         Category $category,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        Request $request
     )
     {
-        $categoryPosts = $postRepository->findBy(['category'=>$category]);
+        $q = $request->query->get('q');
+        $categoryPosts = $postRepository->findSearchedPosts($q,['category'=>$category]);
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
-
 
         return $this->render('home/index.html.twig',[
             'posts'=>$categoryPosts,
@@ -71,10 +69,13 @@ class HomeController extends AbstractController
         Tag $tag,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        Request $request
     )
     {
+        $q = $request->query->get('q');
         $tagPosts = $tag->getPosts();
+//        $tagPosts = $postRepository->findSearchedPostsForTags($q,$tag);
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
@@ -93,10 +94,12 @@ class HomeController extends AbstractController
         User $user,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        Request $request
 )
     {
-        $authorsPosts = $postRepository->findBy(['author'=>$user]);
+        $q = $request->query->get('q');
+        $authorsPosts = $postRepository->findSearchedPosts($q,['author'=>$user]);
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
@@ -108,6 +111,16 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/post-show/{slug}", name="post_show_home")
+     */
+    public function showPost(Post $post)
+    {
+        return $this->render('home/show.html.twig',[
+            'post'=>$post,
+        ]);
+    }
 
 
 }

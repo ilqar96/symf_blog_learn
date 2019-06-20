@@ -8,7 +8,7 @@
             </a>
         </h2>
         <p class="card-text">
-            {{ post.content|wordwrap(20) }}
+            {{ post.content|truncate(270,true) }}
         </p>
         <a href="{{ path('post_show_home',{slug:post.slug}) }}" class="btn btn-primary">Read More &rarr;</a>
     </div>
