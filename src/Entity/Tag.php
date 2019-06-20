@@ -35,6 +35,11 @@ class Tag
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDeleted;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -91,6 +96,18 @@ class Tag
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);
         }
+
+        return $this;
+    }
+
+    public function getIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
