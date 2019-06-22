@@ -6,7 +6,7 @@
     <div class="card my-4">
         <h5 class="card-header">Search</h5>
         <div class="card-body">
-            <form method="GET">
+            <form method="GET" action="{{ form_action|default() }}" >
                 <div class="input-group">
                     <input type="text" name="q" value="{{ app.request.query.get('q') }}" class="form-control" placeholder="Search for...">
                     <span class="input-group-btn">
@@ -38,7 +38,7 @@
         <div class="card-body">
             <div>
                 {% for tag in tags %}
-                    <a  class="mx-1 text-dark text-capitalize" style="text-decoration: none;"  href="{{ path('post_tags_home',{slug:tag.slug}) }}">{{ tag.name }}</a>
+                    <a  class="mx-1 text-dark text-capitalize" style="text-decoration: none;"  href="/tag/{{ tag.slug }}">{{ tag.name }}</a>
                 {% endfor %}
             </div>
         </div>

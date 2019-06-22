@@ -115,10 +115,19 @@ class HomeController extends AbstractController
     /**
      * @Route("/post-show/{slug}", name="post_show_home")
      */
-    public function showPost(Post $post)
+    public function showPost(
+        Post $post,
+        CategoryRepository $categoryRepository,
+        TagRepository $tagRepository
+)
     {
+
+        $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
+        $tags = $tagRepository->findBy([],[],15);
         return $this->render('home/show.html.twig',[
             'post'=>$post,
+            'categorys' => $categorys,
+            'tags' => $tags,
         ]);
     }
 

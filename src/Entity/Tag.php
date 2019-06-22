@@ -38,7 +38,7 @@ class Tag
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isDeleted;
+    private $isDeleted = false;
 
     public function __construct()
     {

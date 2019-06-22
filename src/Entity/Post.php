@@ -94,7 +94,7 @@ class Post
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isDeleted;
+    private $isDeleted = false;
 
     /**
      * Sets createdAt.
