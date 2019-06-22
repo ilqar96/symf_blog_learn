@@ -24,10 +24,10 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      * @param array|null $creadential
-     * @return Post[]
      */
 
-    public function findSearchedPosts(?string $term ,?array $creadential=null){
+    public function findSearchedPostsQueryBuilder(?string $term ,?array $creadential=null):QueryBuilder
+    {
         $qb = $this->createQueryBuilder('p');
         if($creadential!=null) {
             foreach ($creadential as $key => $value) {
@@ -54,9 +54,7 @@ class PostRepository extends ServiceEntityRepository
         }
         $qb ->innerJoin('p.author','a')
             ->addSelect('a');
-        return $qb->orderBy('p.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+        return $qb->orderBy('p.createdAt', 'DESC');
     }
 
     /**

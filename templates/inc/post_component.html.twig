@@ -13,6 +13,8 @@
         <a href="{{ path('post_show_home',{slug:post.slug}) }}" class="btn btn-primary">Read More &rarr;</a>
     </div>
     <div class="card-footer text-muted">
+        Category: {{ post.category.name }}
+        <br>
         Posted on {{ post.createdAt ? post.createdAt|date('d M Y') }} by
         <a href="{{ path('post_authors_home',{id:post.author.id}) }}">{{ post.author.email }}</a>
     </div>

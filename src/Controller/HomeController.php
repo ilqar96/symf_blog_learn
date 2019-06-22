@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +20,7 @@ class HomeController extends AbstractController
      * @Route("/", name="app_homepage")
      */
     public function index(
+        PaginatorInterface $paginator,
         PostRepository $postRepository ,
         CategoryRepository $categoryRepository ,
         TagRepository $tagRepository,
@@ -26,12 +28,19 @@ class HomeController extends AbstractController
     )
     {
         $q = $request->query->get('q');
-        $posts = $postRepository->findSearchedPosts($q);
+        $queryBuilder = $postRepository->findSearchedPostsQueryBuilder($q);
+        $pagination = $paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            7/*limit per page*/
+        );
+
+
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy(['isDeleted'=>false],[],15);
 
         return $this->render('home/index.html.twig', [
-            'posts' => $posts,
+            'posts' => $pagination,
             'categorys' => $categorys,
             'tags' => $tags,
         ]);
@@ -43,6 +52,7 @@ class HomeController extends AbstractController
      * @Route("/category/{slug}", name="post_categorys_home")
      */
     public function showCategorysPost(
+        PaginatorInterface $paginator,
         Category $category,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
@@ -51,12 +61,17 @@ class HomeController extends AbstractController
     )
     {
         $q = $request->query->get('q');
-        $categoryPosts = $postRepository->findSearchedPosts($q,['category'=>$category]);
+        $queryBuilder = $postRepository->findSearchedPostsQueryBuilder($q,['category'=>$category]);
+        $pagination = $paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            7/*limit per page*/
+        );
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
         return $this->render('home/index.html.twig',[
-            'posts'=>$categoryPosts,
+            'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
         ]);
@@ -66,6 +81,7 @@ class HomeController extends AbstractController
      * @Route("/tag/{slug}", name="post_tags_home")
      */
     public function showTagsPost(
+        PaginatorInterface $paginator,
         Tag $tag,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
@@ -91,6 +107,7 @@ class HomeController extends AbstractController
      * @Route("/authors-post/{id}", name="post_authors_home")
      */
     public function showAuthorsPost(
+        PaginatorInterface $paginator,
         User $user,
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
@@ -99,13 +116,18 @@ class HomeController extends AbstractController
 )
     {
         $q = $request->query->get('q');
-        $authorsPosts = $postRepository->findSearchedPosts($q,['author'=>$user]);
+        $queryBuilder = $postRepository->findSearchedPostsQueryBuilder($q,['author'=>$user]);
+        $pagination = $paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            7/*limit per page*/
+        );
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
 
         return $this->render('home/index.html.twig',[
-            'posts'=>$authorsPosts,
+            'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
         ]);
