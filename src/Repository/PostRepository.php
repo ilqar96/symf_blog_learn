@@ -41,9 +41,8 @@ class PostRepository extends ServiceEntityRepository
                             ->setParameter('aut',$value);
                         break;
                     case 'tags' :
-                        $qb->andWhere('p.tags = :tag')
-                            ->setParameter('tag',$value);
-                        dd($qb->getQuery());
+                        $qb ->andWhere(':tag  MEMBER OF p.tags')
+                            ->setParameter('tag', $value);
                         break;
                 }
             }
@@ -52,33 +51,12 @@ class PostRepository extends ServiceEntityRepository
             $qb->andWhere('p.title LIKE :term or p.content LIKE :term ')
                 ->setParameter('term', '%'.$term.'%');
         }
-        $qb ->innerJoin('p.author','a')
+        $qb ->leftJoin('p.tags', 't')
+            ->addSelect('t')
+            ->innerJoin('p.author','a')
             ->addSelect('a');
         return $qb->orderBy('p.createdAt', 'DESC');
     }
-
-    /**
-     * @param string|null $term
-     * @param Tag $tag
-     * @return Post[]
-     */
-
-    public function findSearchedPostsForTags(?string $term ,Tag $tag){
-
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT p
-                FROM App\Entity\Post p
-                INNER JOIN tag_post ON p.id = tag_post.post_id
-                WHERE (p.title LIKE :term or p.content LIKE :term) and  tag_post.tag_id = :tag
-                ORDER BY p.createdAt DESC'
-        )->setParameter('tag', $tag)->setParameter('term',$term);
-
-        // returns an array of Product objects
-        return $query->execute();
-    }
-
 
 
     // /**

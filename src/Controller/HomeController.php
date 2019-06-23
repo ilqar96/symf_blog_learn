@@ -90,14 +90,19 @@ class HomeController extends AbstractController
     )
     {
         $q = $request->query->get('q');
-        $tagPosts = $tag->getPosts();
-//        $tagPosts = $postRepository->findSearchedPostsForTags($q,$tag);
+        $queryBuilder = $postRepository->findSearchedPostsQueryBuilder($q,['tags'=>$tag]);
+
+        $pagination = $paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            7/*limit per page*/
+        );
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
 
         return $this->render('home/index.html.twig',[
-            'posts'=>$tagPosts,
+            'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
         ]);
