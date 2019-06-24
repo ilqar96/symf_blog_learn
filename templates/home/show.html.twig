@@ -15,6 +15,8 @@
             by
             <a href="{{ path('post_authors_home',{id:post.author.id})}}">{{ post.author.email }}</a>
         </p>
+        <span><a class="text-dark" id="like-article" href="{{ path('post_liked',{slug:post.slug}) }}"><i class="far fa-heart"></i></a></span>
+        <span class="article-like-count"> {{ likes }} </span>
 
         <hr>
 
@@ -106,3 +108,31 @@
 
 
 {% endblock %}
+
+{% block javascripts %}
+   {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+            $('#like-article').on('click', function(e) {
+                e.preventDefault();
+
+                var $link = $(e.currentTarget);
+                $link.toggleClass('text-dark').toggleClass('text-danger');
+
+                $.ajax({
+                    method: 'POST',
+                    url: $link.attr('href')
+                }).done(function(data) {
+                    if(data['result']=='success'){
+                        $('.article-like-count').text(data['likes'])
+
+                    }else{
+                        alert('xeta')
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock %}
+

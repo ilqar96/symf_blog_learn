@@ -4,13 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\PostLike;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -145,9 +149,25 @@ class HomeController extends AbstractController
     public function showPost(
         Post $post,
         CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        PostLikeRepository $postLikeRepository
 )
     {
+        $postLikeCount = $postLikeRepository->findBy([
+            'post'=>$post,
+            'liked'=>true,
+        ]);
+
+        if($this->getUser()){
+            $postLikedByMe = $postLikeRepository->findOneBy([
+                'post'=>$post,
+                'author'=>$this->getUser(),
+                'liked'=>true,
+            ]);
+        }
+
+//        dd($postLikedByMe);
+
 
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
@@ -155,7 +175,56 @@ class HomeController extends AbstractController
             'post'=>$post,
             'categorys' => $categorys,
             'tags' => $tags,
+            'likes'=>count($postLikeCount),
+            'liked'=>$postLikedByMe,
         ]);
+    }
+
+
+    /**
+     * @Route("/post-liked/{slug}", name="post_liked")
+     */
+    public function postLiked(
+        Post $post,
+        EntityManagerInterface $em,
+        PostLikeRepository $repository
+    )
+    {
+
+        if(!$this->getUser()){
+            return new JsonResponse(['result'=>'User not registered']);
+        }
+
+        $postLike = $repository->findOneBy([
+            'author'=>$this->getUser(),
+            'post'=> $post,
+        ]);
+
+        if($postLike){
+            $postLike->getLiked()? $postLike->setLiked(false):$postLike->setLiked(true);
+        }else{
+            $postLike = new PostLike();
+
+            $postLike->setPost($post);
+            $postLike->setAuthor($this->getUser());
+            $postLike->setLiked(true);
+        }
+
+        try{
+            $em->persist($postLike);
+            $em->flush();
+            $postLikeCount = $repository->findBy([
+                'post'=>$post,
+                'liked'=>true,
+            ]);
+            return new JsonResponse([
+                'result'=>'success',
+                'likes'=>count($postLikeCount)
+            ]);
+        }catch (\Exception $e) {
+            return new JsonResponse(['result' => 'error']);
+        }
+
     }
 
 
