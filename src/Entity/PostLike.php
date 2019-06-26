@@ -28,7 +28,7 @@ class PostLike
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post" , fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post" ,inversedBy="postLikes" , fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=true)
      */
     private $post;

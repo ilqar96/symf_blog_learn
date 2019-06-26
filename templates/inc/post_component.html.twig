@@ -20,6 +20,11 @@
         <br>
         Category: {{ post.category.name }}
         <br>
+
+        <span ><i class="fas fa-heart text-danger"></i>  {{ post.getLikedPostLikes|length }} </span>
+        &nbsp
+        <span> <i class="fas fa-eye"></i> {{ post.postViews|length }} </span>
+        <br>
         Posted on {{ post.createdAt ? post.createdAt|date('d M Y') }} by
         <a href="{{ path('post_authors_home',{id:post.author.id}) }}">{{ post.author.email }}</a>
     </div>

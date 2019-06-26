@@ -57,6 +57,41 @@ class PostViewRepository extends ServiceEntityRepository
 
     }
 
+//
+//    /**
+//     * @return boolean
+//     */
+//    public function addViewed(Post $post,$user,$clientIp){
+//        $postViewedResult = $this->createQueryBuilder('v')
+//            ->andWhere('v.post = :post')
+//            ->setParameter('post', $post);
+//
+//        if($user != null){
+//            $postViewedResult->andWhere('v.user = :user')
+//                ->setParameter('user', $user);
+//        }else{
+//            $postViewedResult->andWhere('v.userIp = :userIp')
+//                ->setParameter('userIp', $clientIp);
+//        }
+//
+//        $postViewedResult->getQuery()
+//            ->getResult();
+//
+//        dd($postViewedResult);
+//
+//        if($postViewedResult == null){
+//            $postView = new PostView();
+//
+//            $postView->setPost($post);
+//            $postView->setUser($user);
+//            $postView->setUserIp($clientIp);
+//            $this->em->persist($postView);
+//            $this->em->flush();
+//
+//        }
+//        return false;
+//
+//    }
 
 
 

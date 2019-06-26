@@ -28,7 +28,7 @@ class PostView
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post" , fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post" , inversedBy="postViews", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=true)
      */
     private $post;

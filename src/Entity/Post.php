@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,6 +68,16 @@ class Post
     private $comments;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="post")
+     */
+    private $postLikes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PostView", mappedBy="post")
+     */
+    private $postViews;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="posts" ,cascade={"persist"})
      */
     private $tags;
@@ -74,6 +85,8 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->postLikes = new ArrayCollection();
+        $this->postViews = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
 
@@ -250,6 +263,32 @@ class Post
 
         return $this;
     }
+
+    /**
+     * @return Collection|PostLike[]
+     */
+    public function getPostLikes(): Collection
+    {
+        return $this->postLikes;
+    }
+
+
+    public function getLikedPostLikes(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('liked',true));
+
+        return $this->postLikes->matching($criteria);
+    }
+
+    /**
+     * @return Collection|PostView[]
+     */
+    public function getPostViews(): Collection
+    {
+        return $this->postViews;
+    }
+
 
     /**
      * @return Collection|Tag[]
