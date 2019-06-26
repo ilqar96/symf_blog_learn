@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\PostLike;
+use App\Entity\PostView;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
+use App\Repository\PostViewRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -150,10 +152,16 @@ class HomeController extends AbstractController
         Post $post,
         CategoryRepository $categoryRepository,
         TagRepository $tagRepository,
-        PostLikeRepository $postLikeRepository
-)
+        PostLikeRepository $postLikeRepository,
+        PostViewRepository $postViewRepository,
+        Request $request,
+        EntityManagerInterface $em
+        )
     {
+        $postViewRepository->addViewed($post,$this->getUser(),$request->getClientIp());
+
         $postLikeCount = $postLikeRepository->findBy(['post'=>$post,'liked'=>true,]);
+        $postViewCount = $postViewRepository->findBy(['post'=>$post,]);
         $postLikedByMe = $postLikeRepository->findPostIsLikedMe($post,$this->getUser());
 
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
@@ -164,6 +172,7 @@ class HomeController extends AbstractController
             'categorys' => $categorys,
             'tags' => $tags,
             'likes'=>count($postLikeCount),
+            'views'=>count($postViewCount),
             'liked'=>$postLikedByMe,
         ]);
     }

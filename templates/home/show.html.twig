@@ -17,6 +17,8 @@
         </p>
         <span><a class="{{ liked?'text-danger':'text-dark' }}" id="like-article" href="{{ path('post_liked',{slug:post.slug}) }}"><i class="fas fa-heart"></i></a></span>
         <span class="article-like-count"> {{ likes }} </span>
+        &nbsp
+        <span> <i class="fas fa-eye"></i> {{ views }} </span>
 
         <hr>
 
