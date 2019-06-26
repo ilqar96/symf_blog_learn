@@ -15,7 +15,7 @@
             by
             <a href="{{ path('post_authors_home',{id:post.author.id})}}">{{ post.author.email }}</a>
         </p>
-        <span><a class="text-dark" id="like-article" href="{{ path('post_liked',{slug:post.slug}) }}"><i class="far fa-heart"></i></a></span>
+        <span><a class="{{ liked?'text-danger':'text-dark' }}" id="like-article" href="{{ path('post_liked',{slug:post.slug}) }}"><i class="fas fa-heart"></i></a></span>
         <span class="article-like-count"> {{ likes }} </span>
 
         <hr>

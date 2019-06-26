@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Post;
 use App\Entity\PostLike;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,6 +21,40 @@ class PostLikeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PostLike::class);
     }
+
+
+
+    /**
+     * @return boolean
+     */
+    public function findPostIsLikedMe(Post $post,$author)
+    {
+        if($author){
+            $postLikedByMeResult = $this->createQueryBuilder('p')
+                ->andWhere('p.author = :author')
+                ->andWhere('p.post = :post')
+                ->andWhere('p.liked = true')
+                ->setParameter('author', $author)
+                ->setParameter('post', $post)
+                ->getQuery()
+                ->getOneOrNullResult()
+                ;
+
+            return $postLikedByMeResult ? true:false;
+
+        }else{
+            return false;
+        }
+
+    }
+
+
+
+
+
+
+
+
 
     // /**
     //  * @return PostLike[] Returns an array of PostLike objects

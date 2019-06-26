@@ -153,24 +153,12 @@ class HomeController extends AbstractController
         PostLikeRepository $postLikeRepository
 )
     {
-        $postLikeCount = $postLikeRepository->findBy([
-            'post'=>$post,
-            'liked'=>true,
-        ]);
-
-        if($this->getUser()){
-            $postLikedByMe = $postLikeRepository->findOneBy([
-                'post'=>$post,
-                'author'=>$this->getUser(),
-                'liked'=>true,
-            ]);
-        }
-
-//        dd($postLikedByMe);
-
+        $postLikeCount = $postLikeRepository->findBy(['post'=>$post,'liked'=>true,]);
+        $postLikedByMe = $postLikeRepository->findPostIsLikedMe($post,$this->getUser());
 
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
+
         return $this->render('home/show.html.twig',[
             'post'=>$post,
             'categorys' => $categorys,
