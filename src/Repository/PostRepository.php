@@ -53,6 +53,10 @@ class PostRepository extends ServiceEntityRepository
         }
         $qb ->leftJoin('p.tags', 't')
             ->addSelect('t')
+            ->leftJoin('p.postViews', 'pv')
+            ->addSelect('pv')
+            ->leftJoin('p.postLikes', 'pl')
+            ->addSelect('pl')
             ->innerJoin('p.author','a')
             ->addSelect('a');
         return $qb->orderBy('p.createdAt', 'DESC');
