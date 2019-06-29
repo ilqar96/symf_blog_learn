@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Entity\PostView;
@@ -13,6 +14,7 @@ use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\PostViewRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -220,6 +222,35 @@ class HomeController extends AbstractController
             ]);
         }catch (\Exception $e) {
             return new JsonResponse(['result' => 'error']);
+        }
+
+    }
+
+
+    /**
+     * @Route("/add-comment/{slug}" , name="add_comment")
+     */
+    public  function addComment(
+        Post $post,
+        Request $request,
+        EntityManagerInterface $em,
+        UserRepository $userRepository
+    ){
+
+        $content = $request->request->get('content');
+       $user = $this->getUser();
+        try{
+            $comment = new Comment();
+
+            $comment->setPost($post)
+                ->setContent($content)
+                ->setAuthor($this->getUser());
+            $em->persist($comment);
+            $em->flush();
+            return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
+
+        }catch (\Exception $e){
+            return new JsonResponse(['result'=>'error']);
         }
 
     }

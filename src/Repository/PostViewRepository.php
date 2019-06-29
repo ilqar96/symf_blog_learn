@@ -34,14 +34,24 @@ class PostViewRepository extends ServiceEntityRepository
 
 
     public function addViewed(Post $post,$user,$clientIp){
-        $postViewedResult = $this->createQueryBuilder('v')
-            ->andWhere('v.post = :post')
-            ->andWhere('v.userIp = :userIp or v.user = :user')
-            ->setParameter('post', $post)
-            ->setParameter('user', $user)
-            ->setParameter('userIp', $clientIp)
-            ->getQuery()
-            ->getResult();
+
+        if($user != null){
+            $postViewedResult = $this->createQueryBuilder('v')
+                ->andWhere('v.post = :post')
+                ->andWhere('v.user = :user')
+                ->setParameter('post', $post)
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult();
+        }else{
+            $postViewedResult = $this->createQueryBuilder('v')
+                ->andWhere('v.post = :post')
+                ->andWhere('v.userIp = :userIp ')
+                ->setParameter('post', $post)
+                ->setParameter('userIp', $clientIp)
+                ->getQuery()
+                ->getResult();
+        }
 
             if($postViewedResult == null){
                 $postView = new PostView();
@@ -51,16 +61,15 @@ class PostViewRepository extends ServiceEntityRepository
                 $postView->setUserIp($clientIp);
                 $this->em->persist($postView);
                 $this->em->flush();
-
             }
             return false;
-
     }
 
 //
 //    /**
 //     * @return boolean
 //     */
+
 //    public function addViewed(Post $post,$user,$clientIp){
 //        $postViewedResult = $this->createQueryBuilder('v')
 //            ->andWhere('v.post = :post')
@@ -88,6 +97,7 @@ class PostViewRepository extends ServiceEntityRepository
 //            $this->em->persist($postView);
 //            $this->em->flush();
 //
+//            return true;
 //        }
 //        return false;
 //

@@ -2,6 +2,14 @@
 
 {% block title %}Show page!{% endblock %}
 
+
+{% block stylesheets %}
+    <link href="{{ asset('admin/css/sweetalert2.min.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+
+
 {% block body %}
 
     <!-- Post Content Column -->
@@ -56,27 +64,41 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-                <form>
+                <form method="post" id="addCommentForm" action="{{ path('add_comment',{slug:post.slug}) }}">
                     <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea name="content" class="form-control" rows="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
 
-        <!-- Single Comment -->
-        {% for comment in post.comments %}
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">
-                        {{ comment.author? comment.author.email:'Guest' }}
-                    </h5>
-                   {{ comment.content }}
+        <div id="commentArea">
+            <!-- Single Comment -->
+            {% for comment in post.comments if comment.parent==null %}
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">
+                            {{ comment.author? comment.author.email:'Guest' }}
+                        </h5>
+                        {{ comment.content }}
+                        {% for subcom in post.comments if subcom.parent  %}
+                            <div class="media mt-4">
+                                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                <div class="media-body">
+                                    <h5 class="mt-0"> {{ subcom.author? subcom.author.email:'Guest' }}</h5>
+                                    {{ subcom.content }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+
+
+
 
 
 
@@ -114,13 +136,18 @@
 {% block javascripts %}
    {{ parent() }}
 
+    <script src="{{ asset('admin/js/sweetalert2.min.js') }}"></script>
+
     <script>
         $(document).ready(function() {
+
+
+
+            // like post
             $('#like-article').on('click', function(e) {
                 e.preventDefault();
 
                 var $link = $(e.currentTarget);
-                $link.toggleClass('text-dark').toggleClass('text-danger');
 
                 $.ajax({
                     method: 'POST',
@@ -128,12 +155,77 @@
                 }).done(function(data) {
                     if(data['result']=='success'){
                         $('.article-like-count').text(data['likes'])
-
+                        $link.toggleClass('text-dark').toggleClass('text-danger');
                     }else{
-                        alert('xeta')
+                        alert(data['result'])
                     }
                 })
             });
+
+
+            // add comment -------------------------------------------------
+            $('#addCommentForm').on('submit' ,function(e){
+                e.preventDefault()
+                $form = $(this);
+                $formSerialize = $form.serialize();
+                $url = $form.attr('action');
+
+                $.ajax({
+                    url: $url,
+                    type: "post",
+                    data:  $formSerialize,
+                    success: function (response) {
+                        if(response['result']=='success'){
+
+                            $('#addCommentForm textarea').val('');
+
+                            $('#commentArea').append('<div class="media mb-4">\n' +
+                                '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
+                                '   <div class="media-body">\n' +
+                                '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                            '       </div>\n' +
+                            '    </div>');
+
+
+                            Swal.fire({
+                                position: 'top-end',
+                                type: 'success',
+                                title: 'Your comment send',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }else{
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
+                        }
+                    }
+                });
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         });
     </script>
 {% endblock %}

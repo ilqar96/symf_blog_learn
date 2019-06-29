@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -38,6 +39,46 @@ class Comment
      * @ORM\Column(type="boolean")
      */
     private $isDeleted = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent")
+     */
+    protected $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
+     */
+    protected $parent;
+
+    public function __construct() {
+        $this->children = new ArrayCollection();
+    }
+
+    // Once you have that, accessing the parent and children should be straight forward
+    // (they will be lazy-loaded in this example as soon as you try to access them). IE:
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function getChildren() {
+        return $this->children;
+    }
+
+
+    // always use this to setup a new parent/child relationship
+    public function addChild(Comment $child) {
+        $this->children[] = $child;
+        $child->setParent($this);
+    }
+
+
+    public function setParent(Comment $parent)
+    {
+        $this->parent = $parent;
+    }
 
     public function getId(): ?int
     {

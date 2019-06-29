@@ -51,8 +51,10 @@ class PostRepository extends ServiceEntityRepository
             $qb->andWhere('p.title LIKE :term or p.content LIKE :term ')
                 ->setParameter('term', '%'.$term.'%');
         }
-        $qb ->leftJoin('p.tags', 't')
-            ->addSelect('t')
+        $qb ->leftJoin('p.postViews', 'pv')
+            ->addSelect('pv')
+            ->leftJoin('p.postLikes', 'pl')
+            ->addSelect('pl')
             ->innerJoin('p.author','a')
             ->addSelect('a');
         return $qb->orderBy('p.createdAt', 'DESC');
