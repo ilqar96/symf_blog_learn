@@ -247,7 +247,7 @@ class HomeController extends AbstractController
                 ->setAuthor($this->getUser());
             $em->persist($comment);
             $em->flush();
-            return new JsonResponse(['result'=>'success','author'=>$user->getEmail()?:'Guest','content'=>$content]);
+            return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
 
         }catch (\Exception $e){
             return new JsonResponse(['result'=>'error']);

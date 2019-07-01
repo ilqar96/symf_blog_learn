@@ -61,8 +61,6 @@ class PostViewRepository extends ServiceEntityRepository
                 $postView->setUserIp($clientIp);
                 $this->em->persist($postView);
                 $this->em->flush();
-
-
             }
             return false;
     }
