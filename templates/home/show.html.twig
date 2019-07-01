@@ -64,11 +64,12 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
+                <div class="remove-sub d-flex justify-content-between"></div>
                 <form method="post" id="addCommentForm" action="{{ path('add_comment',{slug:post.slug}) }}">
                     <div class="form-group">
-                        <textarea name="content" class="form-control" rows="3"></textarea>
+                        <textarea id="commentContent" name="content" class="form-control" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" data-subid="0" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
@@ -78,8 +79,6 @@
             {{ post.buildCommentTree(post.comments) }}
 
         </div>
-
-
 
 
 
@@ -123,6 +122,24 @@
     <script>
         $(document).ready(function() {
 
+            //reply button
+            $('.addSubCommentBtn').on('click',function (e) {
+                e.preventDefault();
+                $subid = $(this).data('subid');
+                // alert($subid)
+                $('#addCommentForm').find(':submit').data('subid',$subid);
+
+                $('html, body').animate({ scrollTop: $('#commentContent').offset().top -200}, 400);
+
+                $('.remove-sub').empty();
+                $('.remove-sub').prepend('<p>Remove comment</p> <button class="remove-sub-button text-danger btn">X</button>');
+
+            })
+
+            $('.remove-sub').on('click','.remove-sub-button',function () {
+                $('#addCommentForm').find(':submit').data('subid',0);
+            })
+
 
 
             // like post
@@ -149,13 +166,16 @@
             $('#addCommentForm').on('submit' ,function(e){
                 e.preventDefault()
                 $form = $(this);
-                $formSerialize = $form.serialize();
+                $content = $form.find('textarea#commentContent').val();
                 $url = $form.attr('action');
+
+                $subid = $(this).find(':submit').data('subid');
+
 
                 $.ajax({
                     url: $url,
                     type: "post",
-                    data:  $formSerialize,
+                    data:  {'content':$content,'subid':$subid} ,
                     success: function (response) {
                         if(response['result']=='success'){
 
@@ -179,7 +199,7 @@
                         }else{
                             Swal.fire({
                                 type: 'error',
-                                title: 'Oops...',
+                                title: response['result']+"...",
                                 text: 'Something went wrong!',
                             })
                         }

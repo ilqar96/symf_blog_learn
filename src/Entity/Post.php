@@ -350,7 +350,8 @@ class Post
                                 '.$comment->getContent();
                     $this->buildCommentTree($comments, $comment->getId() , 2);
 
-                 echo '  </div>
+                 echo ' <br> <button data-subid="'.$comment->getId().'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>
+                        </div>
                             </div>';
 
             }

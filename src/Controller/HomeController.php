@@ -237,21 +237,28 @@ class HomeController extends AbstractController
         UserRepository $userRepository
     ){
 
-        $content = $request->request->get('content');
-       $user = $this->getUser();
-        try{
-            $comment = new Comment();
+        $content = trim($request->request->get('content'));
+        $subid = (int)$request->request->get('subid');
+        $subid = $subid == 0 ?null:$subid;
 
-            $comment->setPost($post)
-                ->setContent($content)
-                ->setAuthor($this->getUser());
-            $em->persist($comment);
-            $em->flush();
-            return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
+        if($content != ''){
+            $user = $this->getUser();
+            try{
+                $comment = new Comment();
 
-        }catch (\Exception $e){
-            return new JsonResponse(['result'=>'error']);
+                $comment->setPost($post)
+                    ->setContent($content)
+                    ->setParent($subid)
+                    ->setAuthor($this->getUser());
+                $em->persist($comment);
+                $em->flush();
+                return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
+
+            }catch (\Exception $e){
+                return new JsonResponse(['result'=>'error']);
+            }
         }
+        return new JsonResponse(['result'=>'empty']);
 
     }
 

@@ -75,7 +75,7 @@ class Comment
     }
 
 
-    public function setParent(Comment $parent)
+    public function setParent($parent)
     {
         $this->parent = $parent;
     }
