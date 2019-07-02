@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
+use App\Entity\PostTag;
 use App\Entity\PostView;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -257,7 +258,14 @@ class HomeController extends AbstractController
 
                 $em->persist($comment);
                 $em->flush();
-                return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
+                $insertedId = $comment->getId();
+
+                return new JsonResponse([
+                    'result'=>'success',
+                    'author'=>$user?$user->getEmail():'Guest',
+                    'content'=>$content,
+                    'comment_id'=>$insertedId,
+                ]);
             }catch (\Exception $e){
                 return new JsonResponse(['result'=>'error']);
             }

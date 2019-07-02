@@ -129,7 +129,7 @@
             $replyBtn = '';
 
             //reply button
-            $('.addSubCommentBtn').on('click',function (e) {
+            $('#commentArea').on('click','.addSubCommentBtn',function (e) {
                 e.preventDefault();
                 $subid = $(this).data('subid');
                 $replyBtn = $(this);
@@ -143,9 +143,11 @@
 
             })
 
+            // remove reply . remove sub comment
             $('.remove-sub').on('click','.remove-sub-button',function () {
                 $('#addCommentForm').find(':submit').data('subid',0);
                 $('.remove-sub').empty();
+                $replyBtn = '';
             })
 
 
@@ -191,10 +193,11 @@
                             $('.remove-sub').empty();
 
                             if(!$replyBtn == ''){
-                                $replyBtn.parent().append('<div class="media mb-4">\n' +
+                                $replyBtn.parent().append('<div class="media mb-4 mt-3">\n' +
                                     '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
                                     '   <div class="media-body">\n' +
                                     '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '   <br> <button data-subid="'+response["comment_id"]+'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>\n' +
                                     '       </div>\n' +
                                     '    </div>');
                             }else{
@@ -202,6 +205,7 @@
                                     '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
                                     '   <div class="media-body">\n' +
                                     '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '   <br> <button data-subid="'+response["comment_id"]+'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>\n' +
                                     '       </div>\n' +
                                     '    </div>');
                             }
