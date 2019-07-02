@@ -93,6 +93,8 @@
 {#                Cras sit amet nibh libero, in g#}
 {#                ravida nulla. Nulla vel meta. Donec laci#}
 {#                nia congue felis in faucibus.#}
+
+
 {#                <div class="media mt-4">#}
 {#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
 {#                    <div class="media-body">#}
@@ -102,6 +104,8 @@
 {#                        lla vel metus ibus.#}
 {#                    </div>#}
 {#                </div>#}
+
+
 {#            </div>#}
 {#        </div>#}
 
@@ -122,10 +126,13 @@
     <script>
         $(document).ready(function() {
 
+            $replyBtn = '';
+
             //reply button
             $('.addSubCommentBtn').on('click',function (e) {
                 e.preventDefault();
                 $subid = $(this).data('subid');
+                $replyBtn = $(this);
                 // alert($subid)
                 $('#addCommentForm').find(':submit').data('subid',$subid);
 
@@ -138,6 +145,7 @@
 
             $('.remove-sub').on('click','.remove-sub-button',function () {
                 $('#addCommentForm').find(':submit').data('subid',0);
+                $('.remove-sub').empty();
             })
 
 
@@ -167,9 +175,8 @@
                 e.preventDefault()
                 $form = $(this);
                 $content = $form.find('textarea#commentContent').val();
-                $url = $form.attr('action');
-
                 $subid = $(this).find(':submit').data('subid');
+                $url = $form.attr('action');
 
 
                 $.ajax({
@@ -180,13 +187,25 @@
                         if(response['result']=='success'){
 
                             $('#addCommentForm textarea').val('');
+                            $('#addCommentForm').find(':submit').data('subid',0);
+                            $('.remove-sub').empty();
 
-                            $('#commentArea').append('<div class="media mb-4">\n' +
-                                '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
-                                '   <div class="media-body">\n' +
-                                '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
-                            '       </div>\n' +
-                            '    </div>');
+                            if(!$replyBtn == ''){
+                                $replyBtn.parent().append('<div class="media mb-4">\n' +
+                                    '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
+                                    '   <div class="media-body">\n' +
+                                    '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '       </div>\n' +
+                                    '    </div>');
+                            }else{
+                                $('#commentArea').append('<div class="media mb-4">\n' +
+                                    '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
+                                    '   <div class="media-body">\n' +
+                                    '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '       </div>\n' +
+                                    '    </div>');
+                            }
+
 
 
                             Swal.fire({

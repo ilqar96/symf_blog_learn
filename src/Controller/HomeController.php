@@ -10,6 +10,7 @@ use App\Entity\PostView;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\PostViewRepository;
@@ -234,26 +235,29 @@ class HomeController extends AbstractController
         Post $post,
         Request $request,
         EntityManagerInterface $em,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        CommentRepository $commentRepository
     ){
 
         $content = trim($request->request->get('content'));
         $subid = (int)$request->request->get('subid');
-        $subid = $subid == 0 ?null:$subid;
+
 
         if($content != ''){
-            $user = $this->getUser();
             try{
+                $user = $this->getUser();
                 $comment = new Comment();
+                $parentComment = $commentRepository->findOneBy(['id'=>$subid]);
 
                 $comment->setPost($post)
-                    ->setContent($content)
-                    ->setParent($subid)
-                    ->setAuthor($this->getUser());
+                        ->setContent($content)
+                        ->setAuthor($this->getUser())
+                        ->setParent($parentComment)
+                    ;
+
                 $em->persist($comment);
                 $em->flush();
                 return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
-
             }catch (\Exception $e){
                 return new JsonResponse(['result'=>'error']);
             }

@@ -348,10 +348,10 @@ class Post
                                     '.($comment->getAuthor()?$comment->getAuthor()->getEmail():"Guest").'
                                 </h5>
                                 '.$comment->getContent();
+                echo ' <br> <button data-subid="'.$comment->getId().'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>';
                     $this->buildCommentTree($comments, $comment->getId() , 2);
 
-                 echo ' <br> <button data-subid="'.$comment->getId().'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>
-                        </div>
+                 echo '       </div>
                             </div>';
 
             }
