@@ -31,7 +31,7 @@ class Tag
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Post", inversedBy="tags")
+     * @ORM\OneToMany(targetEntity="App\Entity\PostTag", mappedBy="tag")
      */
     private $posts;
 
