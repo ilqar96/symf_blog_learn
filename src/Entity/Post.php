@@ -295,7 +295,7 @@ class Post
 
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection|PostTag[]
      */
     public function getTags(): Collection
     {

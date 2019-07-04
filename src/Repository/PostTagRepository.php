@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Post;
 use App\Entity\PostTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -18,6 +19,27 @@ class PostTagRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PostTag::class);
     }
+
+
+
+
+
+    /**
+     * @return PostTag[]
+     */
+
+    public function postTagView()
+    {
+        return $this->createQueryBuilder('pt')
+            ->leftJoin('pt.post','p')
+            ->addSelect('p')
+            ->leftJoin('pt.tag','t')
+            ->addSelect('t')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
 
 

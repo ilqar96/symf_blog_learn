@@ -14,8 +14,8 @@
     </div>
     <div class="card-footer text-muted">
         Tags:
-        {% for tag in post.tags %}
-            <span class="badge badge-secondary">{{ tag.name }}</span>
+        {% for tag in postTagKeys[post.id] %}
+            <span class="badge badge-secondary">{{ tag }}</span>
         {% endfor %}
         <br>
         Category: {{ post.category.name }}

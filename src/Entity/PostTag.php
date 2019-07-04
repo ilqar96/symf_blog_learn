@@ -55,6 +55,8 @@ class PostTag
     public function setPost($post): self
     {
         $this->post = $post;
+
+        return $this;
     }
 
     /**
@@ -68,9 +70,11 @@ class PostTag
     /**
      * @param mixed $tag
      */
-    public function setTag($tag): void
+    public function setTag($tag): self
     {
         $this->tag = $tag;
+
+        return $this;
     }
 
 

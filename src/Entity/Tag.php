@@ -75,7 +75,7 @@ class Tag
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection|PostTag[]
      */
     public function getPosts(): Collection
     {
