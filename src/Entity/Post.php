@@ -82,7 +82,7 @@ class Post
     private $postViews;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="posts" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\PostTag", mappedBy="post" ,cascade={"persist"})
      */
     private $tags;
 
@@ -295,7 +295,7 @@ class Post
 
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection|PostTag[]
      */
     public function getTags(): Collection
     {

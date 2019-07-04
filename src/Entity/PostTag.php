@@ -2,85 +2,77 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
 
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="post_tag")
+ */
 class PostTag
 {
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="post" , fetch="EXTRA_LAZY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $posts;
+    private $id;
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="tag" , fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post" ,inversedBy="tags", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $tags;
+    private $post;
 
-    public function __construct()
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tag" ,inversedBy="posts", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $tag;
+
+
+
+    public function getId(): ?int
     {
-        $this->posts = new ArrayCollection();
-        $this->tags = new ArrayCollection();
+        return $this->id;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getPost(): ?Post
+    {
+        return $this->post;
     }
 
     /**
-     * @return Collection|Tag[]
+     * @param mixed $post
      */
-    public function getTags(): Collection
+    public function setPost($post): self
     {
-        return $this->tags;
-    }
-
-    public function addTag(Tag $tag): self
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
-            $tag->addPost($this);
-        }
+        $this->post = $post;
 
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    /**
+     * @return mixed
+     */
+    public function getTag(): ?Tag
     {
-        if ($this->tags->contains($tag)) {
-            $this->tags->removeElement($tag);
-            $tag->removePost($this);
-        }
-
-        return $this;
+        return $this->tag;
     }
-
-
 
     /**
-     * @return Collection|Post[]
+     * @param mixed $tag
      */
-    public function getPosts(): Collection
+    public function setTag($tag): self
     {
-        return $this->posts;
-    }
-
-    public function addPost(Post $post): self
-    {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-        }
-
-        return $this;
-    }
-
-    public function removePost(Post $post): self
-    {
-        if ($this->posts->contains($post)) {
-            $this->posts->removeElement($post);
-        }
+        $this->tag = $tag;
 
         return $this;
     }

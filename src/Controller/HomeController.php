@@ -14,6 +14,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
+use App\Repository\PostTagRepository;
 use App\Repository\PostViewRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
@@ -34,7 +35,8 @@ class HomeController extends AbstractController
         PostRepository $postRepository ,
         CategoryRepository $categoryRepository ,
         TagRepository $tagRepository,
-        Request $request
+        Request $request,
+        PostTagRepository $postTagRepository
     )
     {
         $q = $request->query->get('q');
@@ -45,7 +47,11 @@ class HomeController extends AbstractController
             7/*limit per page*/
         );
 
-
+        $postTags = $postTagRepository->postTagView();
+        $postTagKeys =[];
+        foreach ($postTags as $pt ){
+            $postTagKeys[$pt->getPost()->getId()][] = $pt->getTag()->getName();
+        }
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy(['isDeleted'=>false],[],15);
 
@@ -53,6 +59,7 @@ class HomeController extends AbstractController
             'posts' => $pagination,
             'categorys' => $categorys,
             'tags' => $tags,
+            'postTagKeys'=>$postTagKeys,
         ]);
     }
 
@@ -67,7 +74,8 @@ class HomeController extends AbstractController
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
         TagRepository $tagRepository,
-        Request $request
+        Request $request,
+        PostTagRepository $postTagRepository
     )
     {
         $q = $request->query->get('q');
@@ -77,6 +85,13 @@ class HomeController extends AbstractController
             $request->query->getInt('page', 1)/*page number*/,
             7/*limit per page*/
         );
+
+
+        $postTags = $postTagRepository->postTagView();
+        $postTagKeys =[];
+        foreach ($postTags as $pt ){
+            $postTagKeys[$pt->getPost()->getId()][] = $pt->getTag()->getName();
+        }
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
@@ -84,6 +99,7 @@ class HomeController extends AbstractController
             'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
+            'postTagKeys'=>$postTagKeys,
         ]);
     }
 
@@ -96,7 +112,8 @@ class HomeController extends AbstractController
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
         TagRepository $tagRepository,
-        Request $request
+        Request $request,
+        PostTagRepository $postTagRepository
     )
     {
         $q = $request->query->get('q');
@@ -107,6 +124,13 @@ class HomeController extends AbstractController
             $request->query->getInt('page', 1)/*page number*/,
             7/*limit per page*/
         );
+
+
+        $postTags = $postTagRepository->postTagView();
+        $postTagKeys =[];
+        foreach ($postTags as $pt ){
+            $postTagKeys[$pt->getPost()->getId()][] = $pt->getTag()->getName();
+        }
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
@@ -115,6 +139,7 @@ class HomeController extends AbstractController
             'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
+            'postTagKeys'=>$postTagKeys,
         ]);
     }
 
@@ -127,7 +152,8 @@ class HomeController extends AbstractController
         PostRepository $postRepository,
         CategoryRepository $categoryRepository,
         TagRepository $tagRepository,
-        Request $request
+        Request $request,
+        PostTagRepository $postTagRepository
 )
     {
         $q = $request->query->get('q');
@@ -137,6 +163,13 @@ class HomeController extends AbstractController
             $request->query->getInt('page', 1)/*page number*/,
             7/*limit per page*/
         );
+
+
+        $postTags = $postTagRepository->postTagView();
+        $postTagKeys =[];
+        foreach ($postTags as $pt ){
+            $postTagKeys[$pt->getPost()->getId()][] = $pt->getTag()->getName();
+        }
         $categorys = $categoryRepository->findBy(['isDeleted'=>false]);
         $tags = $tagRepository->findBy([],[],15);
 
@@ -145,6 +178,7 @@ class HomeController extends AbstractController
             'posts'=>$pagination,
             'categorys' => $categorys,
             'tags' => $tags,
+            'postTagKeys'=>$postTagKeys,
         ]);
     }
 

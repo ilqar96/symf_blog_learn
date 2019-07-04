@@ -13,7 +13,7 @@
 
                 {% for post in posts %}
                     <!-- Blog Entries Column -->
-                    {{ include('inc/post_component.html.twig',{post:post}) }}
+                    {{ include('inc/post_component.html.twig',{post:post,postTagKeys:postTagKeys}) }}
                 {% endfor %}
 
             {% else %}

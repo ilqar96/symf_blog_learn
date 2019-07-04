@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\PostTag;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -74,9 +75,12 @@ class AppFixtures extends Fixture
 
                foreach (range(0,4) as $tt){
                    $tag = new Tag();
+                   $postTag = new PostTag();
                    $tag->setName($faker->realText(10));
                    $manager->persist($tag);
-                   $tag->addPost($post);
+                   $postTag->setPost($post);
+                   $postTag->setTag($tag);
+                   $manager->persist($postTag);
                }
 
            }
