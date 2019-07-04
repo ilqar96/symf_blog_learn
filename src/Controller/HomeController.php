@@ -6,10 +6,12 @@ use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
+use App\Entity\PostTag;
 use App\Entity\PostView;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\PostViewRepository;
@@ -234,24 +236,41 @@ class HomeController extends AbstractController
         Post $post,
         Request $request,
         EntityManagerInterface $em,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        CommentRepository $commentRepository
     ){
 
-        $content = $request->request->get('content');
-       $user = $this->getUser();
-        try{
-            $comment = new Comment();
+        $content = trim($request->request->get('content'));
+        $subid = (int)$request->request->get('subid');
 
-            $comment->setPost($post)
-                ->setContent($content)
-                ->setAuthor($this->getUser());
-            $em->persist($comment);
-            $em->flush();
-            return new JsonResponse(['result'=>'success','author'=>$user?$user->getEmail():'Guest','content'=>$content]);
 
-        }catch (\Exception $e){
-            return new JsonResponse(['result'=>'error']);
+        if($content != ''){
+            try{
+                $user = $this->getUser();
+                $comment = new Comment();
+                $parentComment = $commentRepository->findOneBy(['id'=>$subid]);
+
+                $comment->setPost($post)
+                        ->setContent($content)
+                        ->setAuthor($this->getUser())
+                        ->setParent($parentComment)
+                    ;
+
+                $em->persist($comment);
+                $em->flush();
+                $insertedId = $comment->getId();
+
+                return new JsonResponse([
+                    'result'=>'success',
+                    'author'=>$user?$user->getEmail():'Guest',
+                    'content'=>$content,
+                    'comment_id'=>$insertedId,
+                ]);
+            }catch (\Exception $e){
+                return new JsonResponse(['result'=>'error']);
+            }
         }
+        return new JsonResponse(['result'=>'empty']);
 
     }
 

@@ -64,40 +64,21 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
+                <div class="remove-sub d-flex justify-content-between"></div>
                 <form method="post" id="addCommentForm" action="{{ path('add_comment',{slug:post.slug}) }}">
                     <div class="form-group">
-                        <textarea name="content" class="form-control" rows="3"></textarea>
+                        <textarea id="commentContent" name="content" class="form-control" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" data-subid="0" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
 
         <div id="commentArea">
-            <!-- Single Comment -->
-            {% for comment in post.comments if comment.parent==null %}
-                <div class="media mb-4">
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0">
-                            {{ comment.author? comment.author.email:'Guest' }}
-                        </h5>
-                        {{ comment.content }}
-                        {% for subcom in post.comments if subcom.parent  %}
-                            <div class="media mt-4">
-                                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                                <div class="media-body">
-                                    <h5 class="mt-0"> {{ subcom.author? subcom.author.email:'Guest' }}</h5>
-                                    {{ subcom.content }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
+
+            {{ post.buildCommentTree(post.comments) }}
+
         </div>
-
-
 
 
 
@@ -112,6 +93,8 @@
 {#                Cras sit amet nibh libero, in g#}
 {#                ravida nulla. Nulla vel meta. Donec laci#}
 {#                nia congue felis in faucibus.#}
+
+
 {#                <div class="media mt-4">#}
 {#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
 {#                    <div class="media-body">#}
@@ -121,6 +104,8 @@
 {#                        lla vel metus ibus.#}
 {#                    </div>#}
 {#                </div>#}
+
+
 {#            </div>#}
 {#        </div>#}
 
@@ -140,6 +125,30 @@
 
     <script>
         $(document).ready(function() {
+
+            $replyBtn = '';
+
+            //reply button
+            $('#commentArea').on('click','.addSubCommentBtn',function (e) {
+                e.preventDefault();
+                $subid = $(this).data('subid');
+                $replyBtn = $(this);
+                // alert($subid)
+                $('#addCommentForm').find(':submit').data('subid',$subid);
+
+                $('html, body').animate({ scrollTop: $('#commentContent').offset().top -200}, 400);
+
+                $('.remove-sub').empty();
+                $('.remove-sub').prepend('<p>Remove comment</p> <button class="remove-sub-button text-danger btn">X</button>');
+
+            })
+
+            // remove reply . remove sub comment
+            $('.remove-sub').on('click','.remove-sub-button',function () {
+                $('#addCommentForm').find(':submit').data('subid',0);
+                $('.remove-sub').empty();
+                $replyBtn = '';
+            })
 
 
 
@@ -167,24 +176,40 @@
             $('#addCommentForm').on('submit' ,function(e){
                 e.preventDefault()
                 $form = $(this);
-                $formSerialize = $form.serialize();
+                $content = $form.find('textarea#commentContent').val();
+                $subid = $(this).find(':submit').data('subid');
                 $url = $form.attr('action');
+
 
                 $.ajax({
                     url: $url,
                     type: "post",
-                    data:  $formSerialize,
+                    data:  {'content':$content,'subid':$subid} ,
                     success: function (response) {
                         if(response['result']=='success'){
 
                             $('#addCommentForm textarea').val('');
+                            $('#addCommentForm').find(':submit').data('subid',0);
+                            $('.remove-sub').empty();
 
-                            $('#commentArea').append('<div class="media mb-4">\n' +
-                                '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
-                                '   <div class="media-body">\n' +
-                                '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
-                            '       </div>\n' +
-                            '    </div>');
+                            if(!$replyBtn == ''){
+                                $replyBtn.parent().append('<div class="media mb-4 mt-3">\n' +
+                                    '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
+                                    '   <div class="media-body">\n' +
+                                    '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '   <br> <button data-subid="'+response["comment_id"]+'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>\n' +
+                                    '       </div>\n' +
+                                    '    </div>');
+                            }else{
+                                $('#commentArea').append('<div class="media mb-4">\n' +
+                                    '   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\n' +
+                                    '   <div class="media-body">\n' +
+                                    '        <h5 class="mt-0">'+response["author"]+'</h5>'+ response["content"]+
+                                    '   <br> <button data-subid="'+response["comment_id"]+'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>\n' +
+                                    '       </div>\n' +
+                                    '    </div>');
+                            }
+
 
 
                             Swal.fire({
@@ -197,7 +222,7 @@
                         }else{
                             Swal.fire({
                                 type: 'error',
-                                title: 'Oops...',
+                                title: response['result']+"...",
                                 text: 'Something went wrong!',
                             })
                         }

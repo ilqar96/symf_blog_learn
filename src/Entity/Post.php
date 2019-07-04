@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -9,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
+use App\Repository\PostRepository;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -329,4 +333,37 @@ class Post
 
         return $this;
     }
+
+
+    public function buildCommentTree($comments , $parent_id = 0 ,$sub = 0){
+
+        foreach ($comments as $comment){
+            if( ($comment->getParent()==null ? 0:$comment->getParent()->getId()) == $parent_id){
+
+//                    dd($comment->getAuthor());
+                echo '  <div class="media mb-4 mt-3">
+                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                            <div class="media-body">
+                                <h5 class="mt-0 ">
+                                    '.($comment->getAuthor()?$comment->getAuthor()->getEmail():"Guest").'
+                                </h5>
+                                '.$comment->getContent();
+                echo ' <br> <button data-subid="'.$comment->getId().'" class="addSubCommentBtn btn btn-outline-secondary btn-sm">Reply</button>';
+                    $this->buildCommentTree($comments, $comment->getId() , 2);
+
+                 echo '       </div>
+                            </div>';
+
+            }
+
+        }
+
+
+    }
+
+
+
+
+
+
 }

@@ -31,7 +31,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false , onDelete="CASCADE")
      */
     private $post;
 
@@ -47,7 +47,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id" , onDelete="CASCADE")
      */
     protected $parent;
 
@@ -75,9 +75,11 @@ class Comment
     }
 
 
-    public function setParent(Comment $parent)
+    public function setParent(?Comment $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
     }
 
     public function getId(): ?int

@@ -55,7 +55,7 @@ class PostRepository extends ServiceEntityRepository
             ->addSelect('pv')
             ->leftJoin('p.postLikes', 'pl')
             ->addSelect('pl')
-            ->innerJoin('p.author','a')
+            ->leftJoin('p.author','a')
             ->addSelect('a');
         return $qb->orderBy('p.createdAt', 'DESC');
     }
